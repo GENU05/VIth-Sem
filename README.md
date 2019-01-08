@@ -1,0 +1,2 @@
+# VIth-Sem
+LAB ASSIGNMENTS FOR 6th SEM
