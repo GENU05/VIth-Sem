@@ -20,16 +20,18 @@ FP = [
 [33	,1	,41	,9	,49	,17	,57	,25],
 ]
 
-def initial(x):
+def initial(x,l):
     if len(x)>8:
-        return initial(x[:8]) + initial(x[8:])
+        return initial(x[:8],l) + initial(x[8:],l+1)
     if len(x)!=8:
         r = 8 - len(x)
         for i in range(r):
             x = x + ' '
+    print()
     a = [int(hex(ord(x[i])),16) for i in range(8)]
     b = [format(a[i],'08b') for i in range(8)]
     c = ''
+    print('Initially block',l,':',b)
     for i in range(8):
         c = c + b[i]
     output = ''
@@ -44,23 +46,31 @@ def initial(x):
         e = e + 8 
     m = ''
     # print(p)
+    # print('ENCRYPTED BITS OF BLOCK:',l,end=': ')
+    so = list()
+    for i in range(len(x)):
+        # print(x[i],'::',format(p[i],'08b'))
+        so.append(format(p[i],'08b'))
+    print('Encrypted block',l,':',so)
     for i in range(len(p)):
         # p[i] = 
         m = m +chr(int(p[i])) 
     
-
+    print('ENCRYPTED BLOCK  ',l,'::',m)
     return m
      
-def final(x):
+def final(x,l):
     if len(x)>8:
-        return final(x[:8]) + final(x[8:])
+        return final(x[:8],l) + final(x[8:],l+1)
     if len(x)!=8:
         r = 8 - len(x)
         for i in range(r):
             x = x + ' '
+    print()
     a = [int(hex(ord(x[i])),16) for i in range(8)]
     b = [format(a[i],'08b') for i in range(8)]
     c = ''
+    print('Encrypted block',l,':',b)
     for i in range(8):
         c = c + b[i]
     output = ''
@@ -75,19 +85,29 @@ def final(x):
         e = e + 8 
     m = ''
     # print(p)
+    # print('ENCRYPTED BITS OF BLOCK:',l,end=': ')
+    so = list()
+    for i in range(len(x)):
+        # print(x[i],'::',format(p[i],'08b'))
+        so.append(format(p[i],'08b'))
+    print('Decrypted block',l,':',so)
     for i in range(len(p)):
         # p[i] = 
         m = m +chr(int(p[i])) 
     
-
+    print('DECRYPTED BLOCK  ',l,'::',m)
     return m
 
 def main():
     s = input('Input: ')
     # des(s)
-    I = initial(s)
-    F = final(I) 
+    print('-'*5,'ENCRYPTION','-'*5,'\n')
+    I = initial(s,1)
+    print('-'*5,'DECRYPTION','-'*5,'\n')
+    F = final(I,1) 
+    print('\n\n')
     print('Initial Output: ', I )
+    print('\n')
     print('Final Output: ', F)
 
     
