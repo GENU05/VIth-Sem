@@ -78,8 +78,6 @@ def final(x):
     for i in range(len(p)):
         # p[i] = 
         m = m +chr(int(p[i])) 
-    
-
     return m
 
 def main():
