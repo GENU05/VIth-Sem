@@ -58,21 +58,17 @@ def two(x):
     return M 
     
 
-            
-
-
-
-
 def algo(x):
     l =  len(x)
     a = [int(hex(ord(x[i])),16) for i in range(l)]
     b = [format(a[i],'08b') for i in range(l)] 
-    M = two( one(b) ) 
-    f = open('testfile.txt','w') 
+    M = two( one(b) )
+    test = (input('test-case-number?:')) 
+    n = 'test_case'+test+'.txt'
+    f = open(n,'w') 
     for i in range(len(M)): 
-        p = 'Round '+str(i+1) + 'Key::' +M[i] +'\n'
         print('Round ',i+1 , 'Key::' ,M[i]) 
-        f.write(p) 
+        f.write(M[i]+'\n') 
     f.close()
     
     pass 
