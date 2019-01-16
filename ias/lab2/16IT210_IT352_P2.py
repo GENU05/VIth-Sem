@@ -48,7 +48,7 @@ def two(x):
     M = list()
     # 1, 2 , 9 , 16 
     for i in range(1,17): 
-        if i == 1 or i == 2 or i == 3 or i == 16: 
+        if i == 1 or i == 2 or i == 9 or i == 16: 
             L = L[1:] + L[0] 
             R = R[1:] + R[0] 
         else:
