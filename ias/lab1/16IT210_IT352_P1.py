@@ -94,11 +94,8 @@ def final(x,l):
     for i in range(len(p)):
         # p[i] = 
         m = m +chr(int(p[i])) 
-<<<<<<< HEAD:ias/des.py
-=======
     
     print('DECRYPTED BLOCK  ',l,'::',m)
->>>>>>> 368968e0fdd86af61202ca7b9539862026780559:ias/16IT210_IT352_P1.py
     return m
 
 def main():
@@ -117,4 +114,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
