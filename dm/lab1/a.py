@@ -93,6 +93,7 @@ def algo(data,sq):
     # C = list() 
     c = 2 
     while True:
+        print('*'*5,c,'*'*5)
         C = update(data,union(L,c-2),sq ) 
         # print(len(C))
         if len(C) <=1:
@@ -103,7 +104,7 @@ def algo(data,sq):
 
 
 
-
+import time
 
 def load_data(x):
     data = list()
@@ -111,13 +112,15 @@ def load_data(x):
         reader = csv.reader(f)
         for row in reader:
             data.append(row)
-    return data
+    return data[:100]
 
 def main():
     # a = 'test_dataset_1.csv' 
     a = 'retail_dataset.csv'
-    data = load_data(a)
+    data = load_data(a) 
+    t = time.time()
     debug_tup( algo(data,2) )
+    print('Time Taken:',time.time()-t,'sec')
 
 if __name__ == '__main__':
     main()
