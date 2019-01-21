@@ -14,14 +14,17 @@ def first(data,sq):
             if d.get(m)==None:
                 d[m] = 1 
             else:
-                d[m] += 1 
+                d[m] = d[m] + 1 
     k = list(d.items()) 
     L = list()
     for i in range(len(k)):
         p = k[i]
+        # print(p)
         if p[1]>=sq:
+            # print('*')
             temp = tup([p[0]],p[1])
-            L.append(temp)
+            L.append(temp) 
+    print(len(L))
     return L
 def has(d,p):
     o = set(p)
@@ -55,7 +58,8 @@ def union(L,z):
 def debug_tup(L):
     # print(len(L))
     for i in range(len(L)):
-        print(L[i].item,'::',L[i].count)
+        if L[i].count !=0:
+            print(L[i].item,'::',L[i].count)
     # print(L[1]==L[0])
 
 def search(l,data):
@@ -112,14 +116,16 @@ def load_data(x):
         reader = csv.reader(f)
         for row in reader:
             data.append(row)
-    return data[:100]
+    return data
 
 def main():
     # a = 'test_dataset_1.csv' 
     a = 'retail_dataset.csv'
     data = load_data(a) 
     t = time.time()
-    debug_tup( algo(data,2) )
+    support_count = 10 # in percentage
+    support = int ( len(data) * support_count / 100 )
+    debug_tup( algo(data,support) )
     print('Time Taken:',time.time()-t,'sec')
 
 if __name__ == '__main__':
