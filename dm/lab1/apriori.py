@@ -57,11 +57,13 @@ def union(L,z):
 
 def debug_tup(L):
     # print(len(L))
+    n = list()
     for i in range(len(L)):
         if L[i].count !=0:
             print(L[i].item,'::',L[i].count)
-    # print(L[1]==L[0])
-
+            n.append(L[i])
+    # print(L[1]==L[0]) 
+    return n 
 def search(l,data):
     c = 0
     A = set(l) 
@@ -87,7 +89,25 @@ def update(data,L,sq):
     return C
 
 
+def one(data):
+    d = dict()
+    for i in range(len(data)):
+        p = data[i]
+        for j in range(len(p)):
+            m = p[j]
+            if d.get(m)==None:
+                d[m] = 1 
+            else:
+                d[m] = d[m] + 1 
+    return d 
 
+def two(data,a,b):
+    c = 0
+    for i in range(len(data)):
+        x = data[i] 
+        if a and b in x :
+            c = c + 1 
+    return c 
 def algo(data,sq):
     fir = first(data,sq)
     # for i in  range(len(fir)):
@@ -118,15 +138,37 @@ def load_data(x):
             data.append(row)
     return data
 
+def asso(data,p,q,limit):
+    n =two(data,p,q)
+    m =( one(data).get(q) )
+    # print(n , ':' , m) 
+    j=n /m
+    if (j) >= limit:
+        print(q,'->',p,':',j) 
+    
+
+
 def main():
-    # a = 'test_dataset_1.csv' 
-    a = 'retail_dataset.csv'
+    a = 'test_dataset_1.csv' 
+    # a = 'retail_dataset.csv'
     data = load_data(a) 
     t = time.time()
     support_count = 10 # in percentage
     support = int ( len(data) * support_count / 100 )
-    debug_tup( algo(data,support) )
+    L =  debug_tup( algo(data,support) )
     print('Time Taken:',time.time()-t,'sec')
+    x = input('Enter 1 to see associaltion rules: ') 
+    if int(x)==1:
+        limit = float(input('Enter confidence limit between 0-1: '))
+        print('Confidence which follows the limits is/are: ')
+        for i in range(len(L)):
+            x = L[i].item 
+            if len(x)!=0:
+                b = x[0] 
+                for j in range(1,len(x)):
+                    asso(data,x[j],b,limit) 
+    print('Done!')
+    
 
 if __name__ == '__main__':
     main()
