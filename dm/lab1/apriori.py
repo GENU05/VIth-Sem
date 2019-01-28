@@ -24,7 +24,8 @@ def first(data,sq):
             # print('*')
             temp = tup([p[0]],p[1])
             L.append(temp) 
-    print(len(L))
+    # for i in range(len(L)):
+        # print(L[i].item,'::',L[i].count)
     return L
 def has(d,p):
     o = set(p)
@@ -153,19 +154,21 @@ def asso(data,p,q,limit):
     else:
         j = 0
     if (j) >= limit:
-        print(q,'==>',p,':',j) 
-
-
+        print(p,'==>',q,':',j) 
 
 
 def main():
-    a = 'test_dataset_1.csv' 
-    # a = 'retail_dataset.csv'
+    inq = int(input('Press 1 for retail dataset. Test Data is default'))
+    if inq==1:
+        a = 'retail_dataset.csv'
+    else:
+        a = 'test_dataset_1.csv' 
+    
     data = load_data(a) 
     t = time.time()
-    support_count = 10 # in percentage
+    support_count = 5 # in percentage
     support = int ( len(data) * support_count / 100 )
-    # support = 2
+    support = 10000
     L =  debug_tup( algo(data,support) )
     print('Time Taken:',time.time()-t,'sec')
     x = input('Enter 1 to see associaltion rules: ') 
