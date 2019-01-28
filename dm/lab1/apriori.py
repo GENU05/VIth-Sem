@@ -1,5 +1,5 @@
 import csv 
-
+from itertools import chain, combinations
 class tup():
     def __init__(self,l,x):
         self.item = l 
@@ -89,25 +89,25 @@ def update(data,L,sq):
     return C
 
 
-def one(data):
-    d = dict()
+def one(data,a):
+    d = 0
     for i in range(len(data)):
         p = data[i]
-        for j in range(len(p)):
-            m = p[j]
-            if d.get(m)==None:
-                d[m] = 1 
-            else:
-                d[m] = d[m] + 1 
+        A = set(a)
+        B = set(p)
+        if A.issubset(B)==True:
+            d = d + 1 
     return d 
 
 def two(data,a,b):
-    c = 0
+    d = 0
     for i in range(len(data)):
         x = data[i] 
-        if a and b in x :
-            c = c + 1 
-    return c 
+        A = set(a+b)
+        B = set(x)
+        if A.issubset(B)==True:
+            d = d + 1
+    return d
 def algo(data,sq):
     fir = first(data,sq)
     # for i in  range(len(fir)):
@@ -139,13 +139,23 @@ def load_data(x):
     return data
 
 def asso(data,p,q,limit):
-    n =two(data,p,q)
-    m =( one(data).get(q) )
+    if len(p)==0 or len(q)==0:
+        return 
+    # print(p,':',q)
+    # n =two(data,p,q) 
+    n = one(data,p+q)
+    m =( one(data,p) )
     # print(n , ':' , m) 
-    j=n /m
+    # n,m=m,n
+    # print(m,':',n)
+    if m!=0:
+        j=n /m
+    else:
+        j = 0
     if (j) >= limit:
-        print(q,'->',p,':',j) 
-    
+        print(q,'==>',p,':',j) 
+
+
 
 
 def main():
@@ -155,18 +165,30 @@ def main():
     t = time.time()
     support_count = 10 # in percentage
     support = int ( len(data) * support_count / 100 )
+    # support = 2
     L =  debug_tup( algo(data,support) )
     print('Time Taken:',time.time()-t,'sec')
     x = input('Enter 1 to see associaltion rules: ') 
     if int(x)==1:
         limit = float(input('Enter confidence limit between 0-1: '))
         print('Confidence which follows the limits is/are: ')
-        for i in range(len(L)):
+        '''for i in range(len(L)):
             x = L[i].item 
             if len(x)!=0:
                 b = x[0] 
                 for j in range(1,len(x)):
-                    asso(data,x[j],b,limit) 
+                    asso(data,x[j],b,limit) ''' 
+        for i in range(len(L)):
+            x = L[i].item 
+            # print(x,':::',i)
+            for j in range(len(x)):
+                sub = list(combinations(x,j)) 
+                # print(sub)
+                for k in range(len(sub)):
+                    a = list(sub[k]) 
+                    b = list( set(x) - set(a)) 
+                    asso(data,a,b,limit)
+
     print('Done!')
     
 
