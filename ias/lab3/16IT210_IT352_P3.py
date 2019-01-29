@@ -89,9 +89,9 @@ def f(l,k):
     for i in range(len(E)):
         for j in range(len(E[i])):
             x = x + l[ E[i][j] -1  ] 
-    # print(k)
+    # print(x)
     y =  int(x,2) ^ int(k,2)
-    # print(p) 
+    # print(y) 
     # p = bin(p)[2:] 
     p = '{0:b}'.format(y)
     # print('$',len(p))
@@ -102,14 +102,15 @@ def f(l,k):
     for i in range(8):
         bits_6_in_each_round = p[6*i:6*i+6] 
         # print(bits_6_in_each_round)
-        initial_2_bits = bits_6_in_each_round[:2] 
+        row = int(bits_6_in_each_round[0] +  bits_6_in_each_round[5],2)
         # print(initial_2_bits)
-        l = S[i][int(initial_2_bits,2)] 
-        last_4_digits = bits_6_in_each_round[2:] 
+        l = S[i][row] 
+        last_4_digits = bits_6_in_each_round[1:5] 
         # print('*',last_4_digits)
         ans = l[int(last_4_digits,2)] 
         final = final + format(ans,'04b') 
     q = ''
+    # print(int(final,2))
     for i in range(len(P)):
         for j in range(len(P[i])):
             q = q + final[ P[i][j] - 1 ] 
@@ -128,6 +129,7 @@ def algo(x,k ):
     y = int(temp,2) ^ int( fq ,2)   
     n = '{0:b}'.format(y)
     n = '0'*(32-len(n)) + n
+    # print(n)
     r = n   
     # print(n)
     # r = format(n,'32b')
@@ -145,7 +147,9 @@ def main():
     for i in range(16):
         # print(key[i])
         inp = algo(inp,key[i]) 
+        
     print(inp)
+    # print(int(inp,2))
     
 
 
