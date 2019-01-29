@@ -90,8 +90,15 @@ def f(l,k):
         for j in range(len(E[i])):
             x = x + l[ E[i][j] -1  ] 
     # print(k)
-    p = str( format( int(x,2) ^ int(k,2) , '48b' ) )  
+    y =  int(x,2) ^ int(k,2)
+    # print(p) 
+    # p = bin(p)[2:] 
+    p = '{0:b}'.format(y)
+    # print('$',len(p))
+    p = '0'*(48-len(p)) + p 
+    # print('%',len(p))
     final = ''
+    # print(p,len(p))
     for i in range(8):
         bits_6_in_each_round = p[6*i:6*i+6] 
         # print(bits_6_in_each_round)
@@ -99,6 +106,7 @@ def f(l,k):
         # print(initial_2_bits)
         l = S[i][int(initial_2_bits,2)] 
         last_4_digits = bits_6_in_each_round[2:] 
+        # print('*',last_4_digits)
         ans = l[int(last_4_digits,2)] 
         final = final + format(ans,'04b') 
     q = ''
@@ -115,7 +123,14 @@ def algo(x,k ):
     r = x[32:] 
     temp = l[:] 
     l = r[:] 
-    r = str(format ( ( int(temp,2) ^ int( f(l,k) ,2) ) ,'32b' ) )
+    fq = f(r,k)
+    # print(temp)
+    y = int(temp,2) ^ int( fq ,2)   
+    n = '{0:b}'.format(y)
+    n = '0'*(32-len(n)) + n
+    r = n   
+    # print(n)
+    # r = format(n,'32b')
     return l + r 
 
 
@@ -128,7 +143,7 @@ def main():
         # print(line)
         key.append(str(line.strip())) 
     for i in range(16):
-        print(key[i])
+        # print(key[i])
         inp = algo(inp,key[i]) 
     print(inp)
     
