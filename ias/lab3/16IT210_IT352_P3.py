@@ -147,8 +147,8 @@ def main():
     for i in range(16):
         # print(key[i])
         inp = algo(inp,key[i]) 
-        
-    print(inp)
+    
+    print(inp[32:]+inp[:32])
     # print(int(inp,2))
     
 

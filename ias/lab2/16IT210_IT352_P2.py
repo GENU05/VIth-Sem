@@ -86,13 +86,13 @@ def main():
         if y == 1 :
             x = x[:8]
         elif y==2:
-            x = x[::-1][:8]
+            x = x[len(x)-8:]
         else:
             print('Error. Wrong choice.') 
             x=''
     if len(x)!=8:
         return -1
-
+    print(x)
     algo(x)
 
 
