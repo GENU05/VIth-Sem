@@ -24,7 +24,7 @@ def algo(k,e,n):
         p = ord(k[i]) 
         s=int(p) 
         while True:
-            q=1
+            q=1+q
             # c = s**e % n 
             c = sq(s,e,n)
             if c==p:
@@ -33,7 +33,7 @@ def algo(k,e,n):
             else:
                 s = c 
             # print(s,p)
-            if q==100:
+            if q==10**3:
                 print('Infinite Loop')
                 return False
     
