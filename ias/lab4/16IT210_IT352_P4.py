@@ -136,7 +136,7 @@ def initial(x,l):
         # p[i] = 
         m = m +chr(int(p[i])) 
     
-    print('EP Block  ',l,'::',m)
+    # print('EP Block  ',l,'::',m)
     return m
      
 def final(x,l):
@@ -147,7 +147,7 @@ def final(x,l):
         r = 8 - len(x)
         for i in range(r):
             x = x + ' '
-    # print()
+    # 
     a = [int(hex(ord(x[i])),16) for i in range(8)]
     b = [format(a[i],'08b') for i in range(8)]
     c = ''
@@ -177,7 +177,7 @@ def final(x,l):
         # p[i] = 
         m = m +chr(int(p[i])) 
     
-    print('FP on Block  ',l,'::',m)
+    # print('FP on Block  ',l,'::',m)
     return m
 
 # 16 Round Encryption
@@ -337,8 +337,11 @@ def sixteen(plaintext):
     for i in range(16):
         # print(inp,len(inp))
         inp = algo3(inp,key[i]) 
+        if i!=15:
+            print(inp)
     p = inp[32:]+inp[:32]
-    # print(p) 
+    print(p) 
+    # print('-'*10)
     return p
 
 def str_bin(x):
@@ -352,33 +355,39 @@ def ecb(plain,key):
     e =  8 
     l = ''
     keyGeneration(key)
-    for i in range(5):
-        print()
-        print('Palin Block',i+1,'::',plain[s:e]) 
-        print('In Binary',i+1,'::',str_bin(plain[s:e])) 
+    f = open('output.txt','w') 
+    n = len(plain) / 8 
+    if n > int(n):
+        n = int(n) + 1
+    # print(n)
+    for i in range(int(n)):
+        
+        # print('Palin Block',i+1,'::',plain[s:e])
+        # print('In Binary',i+1,'::',str_bin(plain[s:e])) 
         ini = initial(plain[s:e],i+1) 
         # print('1==>',ini,len(ini))
         p = sixteen(ini)
         # print('2==>',p) 
         fpi = final(p,i+1) 
-        print('Encrypted Block',i+1,'::',str_bin(fpi))
+        print('Cipher Block',i+1,'::',str_bin(fpi))
         l = l  + fpi 
+        f.write(str_bin(fpi)+'\n') 
         s = e 
         e = e + 8
-    print()
-    print(l)
+    
+    # print(l)
 
 
 def main():
-    # plain = input('Plaint Text: ')
-    plain = 'Information Assurance and Security 2018'
+    plain = input('Plaint Text: ')
+    # plain = 'Information Assurance and Security 2018'
     if len(plain) > 40:
         return 
-    elif len(plain) < 40:
-        x = 40 - len(plain) 
-        plain = plain + ' ' * x 
-    # roundkey = input('RoundKey: ') 
-    roundkey = 'CRYPTOGR'
+    # elif len(plain) < 40:
+    #     x = 40 - len(plain) 
+    #     plain = plain + ' ' * x 
+    roundkey = input('RoundKey: ') 
+    # roundkey = 'CRYPTOGR'
     if len(roundkey) != 8:
         return 
     ecb(plain,roundkey)
