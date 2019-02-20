@@ -44,68 +44,63 @@ def sq(x,c,n):
     return int(z)
 def algo(k,e,n):
     l = list()
-    for i in range(len(k)):
+    # f = open("Program5-Output-CyclicProgram5.txt","w")
+    f = open("q.txt","w")
+    for i in range(1):
         q=0
-        p = ord(k[i]) 
+        p = k 
         s=int(p) 
+        writing = 'C'+str(0)+'= '+str(k)+'\n'
+        f.write(writing)
         while True:
             q=1+q
-            # c = s**e % n 
-            c = sq(s,e,n)
+            c = s**e % n 
+            writing = 'C'+str(q)+' = '+str(c)+'\n'
+            print(writing,end='')
+            f.write(writing)
+            # c = sq(s,e,n)
             if c==p:
-                l.append(chr(s)) 
+                l.append(int(s)) 
                 break 
             else:
                 s = c 
             # print(s,p)
-            if q==10**3:
+            if q==10**9:
                 print('Infinite Loop')
                 return False
     
     print('CIPHER:',k)
-    print('Plain:',''.join(l))
-    print(enc(l,k,e,n))
+    print('Plain:',l[0])
+    print(enc(l[0],k,e,n))
     return l 
 
 def enc(l,k,e,n): 
     m = []
-    for i in range(len(l)):
-        p = ord(l[i])
-        # c = p ** e % n 
-        c = sq(p,e,n)
-        m.append(chr(c)) 
-    print('Checking::',''.join(m))
-    if m==list(k):
+    for i in range(1):
+        p = int(l)
+        c = p ** e % n 
+        # c = sq(p,e,n)
+        m.append(int(c)) 
+    print('Checking::',(m[0]))
+    if m[0]==(k):
         return True 
     return False
 
-def gcd(a, b): 
-      
-    # Everything divides 0  
-    if (a == 0 or b == 0): 
-            False
-      
-    # base case 
-    if (a == b): 
-        return a 
-  
-    # a is greater 
-    if (a > b): 
-        return gcd(a-b, b) 
-          
-    return gcd(a, b-a) 
-      
+
 
 def main():
-    k = input('Cipher Text:')
+    k = int(input('Cipher Text:'))
     e = int(input('e: '))
     n = int(input('N: ')) 
+    # k = 104034
+    # e=11
+    # n=295927
     l = primeFactors(n) 
     if len(l)!=2:
         print('Incorrect p & q ')
     p , q = l[0] , l[1] 
-    phi = (p-1) * (q-1)
-    if gcd(phi,e)!=1:
+    phi = int( (p-1) * (q-1) )
+    if math.gcd(phi,e)!=1:
         print('E and Phi are not co-prime.')
     algo(k,e,n)
 
