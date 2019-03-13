@@ -1,4 +1,5 @@
 
+f = open('Program6-Output-BlindSignature.txt','w')
 def inverse(e, m) : 
     e = e % m; 
     for i in range(1, m) : 
@@ -6,27 +7,65 @@ def inverse(e, m) :
             return i
     return -1
 
+def con(value):
+    hex_res = hex(value)[2:]
+    res = bytes.fromhex(hex_res).decode('utf-8')
+    return res
 def blind_attack(n,phi,blocks,r,ir,d,e):
     ans = list() 
     c = 1 
     m = 0 
     for i in blocks:
+        text = '-'*5+'Block:'+str(c)+'-'*5 +'\n'
+        f.write(text)
+        print(text)
         c = c + 1 
-        s =  (i%n)* ((r**e)%n) % n  
+
+        text = 'Block: '+ str(con(i))
+        f.write(text+'\n')
+        print(text)
+
+        text = 'Initial Block (m) :' + str(i)
+        f.write(text+'\n')
+        print(text)
+
+        s =  (i%n)* ((r**e)%n) % n 
+        text = "m' : " + str(s) 
+        f.write(text+'\n')
+        print(text) 
+
         sentS = s**d % n 
-        print("Sent S",sentS) 
+        text = 'Blind Signature: ' + str(sentS) 
+        f.write(text+'\n')
+        print(text)
+
         # apply inverse 
         iS = (sentS * ir ) % n 
-        print('Signature : ',iS)
+        text = 'Signature: ' + str(iS)
+        f.write(text+'\n')
+        print(text)
+
+        text = 'm(check): ' + str(iS**e%n)
+        f.write(text+'\n')
+        print(text)
+
+        text = 'Decrypted Block: '+ str(con(iS**e%n))
+        f.write(text+'\n') 
+        print(text) 
+
         if iS**e%n !=i:
             m = 1 
             print("Unsuccessfull")
+            f.write('\nUnsuccessfull\n')
+            return -1
         p = hex(iS)[2:]
-        print(p)
+        # print(p)
         ans.append(p)
     if m==0:
+        print('\n')
         print("Successful")
-    print('All Blocks:\n',ans) 
+        f.write('\nSuccessful\n')
+    print('All Blocks [In Hex] :\n',ans) 
     return ans
 
 def final(ans):
@@ -44,6 +83,8 @@ def final(ans):
         fs+=s
         count+=1
     print("-"*50)
+    text = 'Final Signature: ' + str(fs) +'\n'
+    f.write(text)
     print("Final signature :",fs)
 
 def size(n):
@@ -54,15 +95,22 @@ def size(n):
     if power ==0:
         power = 1 
     return power
-
+from math import gcd
 def main():
+    test = int(input('Test-Case: '))
+    text = '$'*5 + '-'*5 + 'Test Case - ' + str(test) +  '-'*5 + '$'*5 + '\n'
+    f.write(text)
+    
+    p = int(input('P: '))
+    q = int(input('Q: '))
     e = int(input('e: '))
     r = int(input('r: '))
     plain = input('Plaint text: ')
-    p = int(input('P: '))
-    q = int(input('Q: '))
+    
     n = p * q 
     phi = (p-1)*(q-1)
+    if gcd(e,phi)!=1:
+        print("E and Phi are not co-prime")
     power = size(n)
     blocks = []
     i=0

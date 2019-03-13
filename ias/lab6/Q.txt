@@ -1,0 +1,28 @@
+$$$$$-----Test Case - 5-----$$$$$
+-----Block:1-----
+Block: AB
+Initial Block (m) :16706
+m' : 117254
+Blind Signature: 112792
+Signature: 78663
+m(check): 16706
+Decrypted Block: AB
+-----Block:2-----
+Block: CD
+Initial Block (m) :17220
+m' : 118959
+Blind Signature: 9690
+Signature: 3230
+m(check): 17220
+Decrypted Block: CD
+-----Block:3-----
+Block: E
+Initial Block (m) :69
+m' : 16767
+Blind Signature: 103318
+Signature: 75505
+m(check): 69
+Decrypted Block: E
+
+Successful
+Final Signature: 4Éo

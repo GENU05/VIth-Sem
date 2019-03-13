@@ -1,0 +1,105 @@
+$$$$$-----Test Case - 1-----$$$$$
+-----Block:1-----
+Block: NI
+Initial Block (m) :20041
+m' : 72112
+Blind Signature: 69858
+Signature: 119094
+m(check): 20041
+Decrypted Block: NI
+-----Block:2-----
+Block: TK
+Initial Block (m) :21579
+m' : 115550
+Blind Signature: 40043
+Signature: 40987
+m(check): 21579
+Decrypted Block: TK
+
+Successful
+Final Signature:  
+
+$$$$$-----Test Case - 2-----$$$$$
+E and Phi are not co-prime 
+No d value possible
+
+$$$$$-----Test Case - 3-----$$$$$
+-----Block:1-----
+Block: 5
+Initial Block (m) :53
+m' : 15276
+Blind Signature: 406
+Signature: 58
+m(check): 53
+Decrypted Block: 5
+-----Block:2-----
+Block: 2
+Initial Block (m) :50
+m' : 22007
+Blind Signature: 29839
+Signature: 26382
+m(check): 50
+Decrypted Block: 2
+-----Block:3-----
+Block: 5
+Initial Block (m) :53
+m' : 15276
+Blind Signature: 406
+Signature: 58
+m(check): 53
+Decrypted Block: 5
+
+Successful
+Final Signature: :g:
+
+
+$$$$$-----Test Case - 4-----$$$$$
+-----Block:1-----
+Block: NI
+Initial Block (m) :20041
+m' : 94732
+Blind Signature: 3532
+Signature: 42243
+m(check): 20041
+Decrypted Block: NI
+-----Block:2-----
+Block: TK
+Initial Block (m) :21579
+m' : 8822
+Blind Signature: 50598
+Signature: 16866
+m(check): 21579
+Decrypted Block: TK
+
+Successful
+Final Signature: ¥Aâ
+
+
+$$$$$-----Test Case - 5-----$$$$$
+-----Block:1-----
+Block: AB
+Initial Block (m) :16706
+m' : 117254
+Blind Signature: 112792
+Signature: 78663
+m(check): 16706
+Decrypted Block: AB
+-----Block:2-----
+Block: CD
+Initial Block (m) :17220
+m' : 118959
+Blind Signature: 9690
+Signature: 3230
+m(check): 17220
+Decrypted Block: CD
+-----Block:3-----
+Block: E
+Initial Block (m) :69
+m' : 16767
+Blind Signature: 103318
+Signature: 75505
+m(check): 69
+Decrypted Block: E
+
+Successful
+Final Signature: 4Éo
