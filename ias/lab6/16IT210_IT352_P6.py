@@ -6,6 +6,41 @@ def inverse(e, m) :
             return i
     return -1
 
+def blind_attack(n,phi,blocks,r,ir,d,e):
+    ans = list() 
+    c = 1 
+    for i in blocks:
+        c = c + 1 
+        s =  (i%n)* ((r**e)%n) % n  
+        sentS = s**d % n 
+        print("Sent S",sentS) 
+        # apply inverse 
+        iS = (sentS * ir ) % n 
+        print('Signature : ',iS)
+        p = hex(iS)[2:]
+        print(p)
+        ans.append(p)
+
+    print('All Blocks:\n',ans) 
+    return ans
+
+def final(ans):
+    fs = ""
+    count = 1
+    for i in ans:
+        s = ""
+        for j in range(0,len(i),2):
+            if j+1 < len(i):
+                value = chr(int(i[j]+i[j+1],16))
+            else:
+                value =  chr(int(i[j],16))
+            s += value
+        print("Block ",str(count)," signature :",s)
+        fs+=s
+        count+=1
+    print("-"*10)
+    print("Final signature :",fs)
+
 def main():
     e = int(input('e: '))
     r = int(input('r: '))
@@ -16,8 +51,8 @@ def main():
     phi = (p-1)*(q-1)
     power = 1 
     while 2**(power*8) < n:
-    power+=1
-    power -=1
+        power = power + 1
+    power = power - 1
     if power ==0:
         power = 1
     blocks = []
@@ -25,7 +60,7 @@ def main():
     while i < len(plain):
         j=0
         temp = ""
-        while j<take and i<len(plain):
+        while j<power and i<len(plain):
             j+=1
             temp += hex(ord(plain[i]))[2:]
             i+=1
@@ -37,6 +72,13 @@ def main():
         print('No d value possible')
         return -1 
     
+    ir = inverse(r,n) 
+    if ir==-1 or (ir*r)%n != 1 :
+        print('No r possible')
+        return -1 
+        
+    ans = blind_attack(n,phi,blocks,r,ir,d,e) 
+    final(ans)
 
 
 
