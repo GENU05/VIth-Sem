@@ -21,7 +21,7 @@ def blind_attack(n,phi,blocks,r,ir,d,e):
         print(text)
         c = c + 1 
 
-        text = 'Block: '+ str(con(i))
+        text = 'Block Value: '+ str(con(i))
         f.write(text+'\n')
         print(text)
 
@@ -30,38 +30,40 @@ def blind_attack(n,phi,blocks,r,ir,d,e):
         print(text)
 
         #encrypting plain text
-        i = i ** e % n 
+        # iI = i ** e % n 
+        iI = i 
 
         #-----------------
-        s =  (i%n)* ((r**e)%n) % n 
+        s =  (iI%n)* ((r**e)%n) % n 
         text = "m' : " + str(s) 
         f.write(text+'\n')
         print(text) 
 
         sentS = s**d % n 
-        text = 'Blind Signature: ' + str(sentS) 
+        text = "m''  " + str(sentS) 
         f.write(text+'\n')
         print(text)
 
         # apply inverse 
         iS = (sentS * ir ) % n 
-        text = 'Signature: ' + str(iS)
+        text = 'Plain: ' + str(iS)
         f.write(text+'\n')
         print(text)
 
-        text = 'm(check): ' + str(iS**e%n)
-        f.write(text+'\n')
-        print(text)
+        # text = 'm(check): ' + str(iS**e%n)
+        # f.write(text+'\n')
+        # print(text)
 
         # text = 'Decrypted Block: '+ str(con(iS**e%n))
-        f.write(text+'\n') 
-        print(text) 
+        # f.write(text+'\n') 
+        # print(text) 
 
-        if iS**e%n !=i:
+        if  iS**e%n !=i: # iS !=i:
             m = 1 
             print("Unsuccessfull")
             f.write('\nUnsuccessfull\n')
             return -1
+        # iS = iS**e % n 
         p = hex(iS)[2:]
         # print(p)
         ans.append(p)
@@ -74,7 +76,9 @@ def blind_attack(n,phi,blocks,r,ir,d,e):
 
 def final(ans):
     fs = ""
-    count = 1
+    count = 1 
+    if type(ans) == int:
+        return 
     for i in ans:
         s = ""
         for j in range(0,len(i),2):
@@ -83,13 +87,13 @@ def final(ans):
             else:
                 value =  chr(int(i[j],16))
             s += value
-        print("Block ",str(count)," signature :",s)
+        # print("Block ",str(count)," Value :",s)
         fs+=s
         count+=1
     print("-"*50)
-    text = 'Final Signature: ' + str(fs) +'\n'
+    text = 'Final Output: ' + str(fs) +'\n'
     f.write(text)
-    print("Final signature :",fs)
+    print("Final Output :",fs)
 
 def size(n):
     power = 1 
@@ -110,16 +114,18 @@ def main():
 
     n = p * q 
     phi = (p-1)*(q-1)
-
-    e = int(input('e: '))
     r = int(input('r: '))
-    plain = input('Plaint text: ')
+    e = int(input('e: '))
+    
+    
+    
+    plain = input('Cypher text: ')
     
     if gcd(e,phi)!=1:
         print("E and Phi are not co-prime")
     
     power = size(n)
-    print(power)
+    # print(power)
     blocks = []
     i=0
     while i < len(plain):
@@ -130,16 +136,20 @@ def main():
             temp += hex(ord(plain[i]))[2:]
             i+=1
         blocks.append(int(temp,16))
-    print(blocks)
+    # print(blocks)
 
     d = inverse(e,phi) 
     if d==-1 or (e*d)%phi!=1:
-        print('No d value possible')
+        text = 'No d value possible'
+        f.write(text+'\n')
+        print(text)
         return -1 
     
     ir = inverse(r,n) 
     if ir==-1 or (ir*r)%n != 1 :
-        print('No r possible')
+        text = 'No r possible'
+        f.write(text+'\n')
+        print(text)
         return -1 
 
     ans = blind_attack(n,phi,blocks,r,ir,d,e) 

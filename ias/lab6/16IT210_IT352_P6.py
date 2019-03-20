@@ -35,13 +35,13 @@ def blind_attack(n,phi,blocks,r,ir,d,e):
         print(text) 
 
         sentS = s**d % n 
-        text = 'Blind Signature: ' + str(sentS) 
+        text = "m'' " + str(sentS) 
         f.write(text+'\n')
         print(text)
 
         # apply inverse 
         iS = (sentS * ir ) % n 
-        text = 'Signature: ' + str(iS)
+        text = 'Message: ' + str(iS)
         f.write(text+'\n')
         print(text)
 

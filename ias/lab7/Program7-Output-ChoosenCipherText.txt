@@ -1,0 +1,46 @@
+$$$$$-----Test Case - 1-----$$$$$
+-----Block:1-----
+Block Value: >b
+Initial Block (m) :15970
+m' : 61639
+m''  109414
+Plain: 77537
+
+Successful
+Final Output: î
+
+$$$$$-----Test Case - 2-----$$$$$
+-----Block:1-----
+Block Value: M
+Initial Block (m) :77
+m' : 23362
+m''  16367
+Plain: 6762
+-----Block:2-----
+Block Value: .
+Initial Block (m) :46
+m' : 10337
+m''  29812
+Plain: 30802
+
+Successful
+Final Output: jxR
+
+
+$$$$$-----Test Case - 3-----$$$$$
+-----Block:1-----
+Block Value: }P
+Initial Block (m) :32080
+m' : 113045
+m''  21763
+Plain: 51055
+
+Successful
+Final Output: Ço
+
+
+$$$$$-----Test Case - 4-----$$$$$
+No d value possible
+
+$$$$$-----Test Case - 5-----$$$$$
+No d value possible
