@@ -1,0 +1,134 @@
+[
+  {
+    "_index": "packets-2019-03-26",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.interface_id": "0",
+          "frame.interface_id_tree": {
+            "frame.interface_name": "any"
+          },
+          "frame.encap_type": "25",
+          "frame.time": "Mar 26, 2019 23:12:48.499309670 IST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1553622168.499309670",
+          "frame.time_delta": "0.000224042",
+          "frame.time_delta_displayed": "0.000000000",
+          "frame.time_relative": "20.615887128",
+          "frame.number": "9558",
+          "frame.len": "83",
+          "frame.cap_len": "83",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "sll:ethertype:ip:tcp:data",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "sll": {
+          "sll.pkttype": "0",
+          "sll.hatype": "772",
+          "sll.halen": "6",
+          "sll.src.eth": "00:00:00:00:00:00",
+          "sll.unused": "42:6f",
+          "sll.etype": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "67",
+          "ip.id": "0x0000d2df",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00009256",
+          "ip.checksum.status": "2",
+          "ip.src": "192.168.42.23",
+          "ip.addr": "192.168.42.23",
+          "ip.src_host": "192.168.42.23",
+          "ip.host": "192.168.42.23",
+          "ip.dst": "192.168.42.23",
+          "ip.addr": "192.168.42.23",
+          "ip.dst_host": "192.168.42.23",
+          "ip.host": "192.168.42.23"
+        },
+        "tcp": {
+          "tcp.srcport": "58570",
+          "tcp.dstport": "10000",
+          "tcp.port": "58570",
+          "tcp.port": "10000",
+          "tcp.stream": "21",
+          "tcp.len": "15",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "16",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "342",
+          "tcp.window_size": "342",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000d5b4",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:34:a7:92:86:34:a7:1e:29",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:34:a7:92:86:34:a7:1e:29",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "883397254",
+              "tcp.options.timestamp.tsecr": "883367465"
+            }
+          },
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "15",
+            "tcp.analysis.push_bytes_sent": "15"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          },
+          "tcp.payload": "79:6f:75:20:61:72:65:20:61:77:65:73:6f:6d:0a"
+        },
+        "data": {
+          "data.data": "79:6f:75:20:61:72:65:20:61:77:65:73:6f:6d:0a",
+          "data.len": "15"
+        }
+      }
+    }
+  }
+
+]
