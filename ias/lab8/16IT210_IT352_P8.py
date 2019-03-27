@@ -47,8 +47,27 @@ def con(value):
     hex_res = hex(value)[2:]
     res = bytes.fromhex(hex_res).decode('utf-8')
     return res
-
-def cyclic_attack(k,e,n):
+def power(x, y , n): 
+  
+    # Initialize result 
+    res = 1
+      
+    while (y > 0): 
+          
+        # If y is odd, multiply 
+        # x with result 
+        if ((y & 1) == 1) : 
+            res = (res * x) % n
+  
+        # n must be even  
+        # now y = y/2 
+        y = y >> 1
+          
+        # Change x to x^2 
+        x = (x * x) % n 
+      
+    return res % n 
+def algo(k,e,n):
     l = list()
     # f = open("Program5-Output-CyclicProgram5.txt","w")
     f = open("q.txt","w")
@@ -57,14 +76,14 @@ def cyclic_attack(k,e,n):
         p = k 
         s=int(p) 
         writing = 'C'+str(0)+'= '+str(k)+'\n'
-        # f.write(writing)
-        j = 1 
+        f.write(writing)
         while True:
             q=1+q
-            c = s**e % n 
+            # c = s**e % n 
+            c = pow(s,e,n) % n
             writing = 'C'+str(q)+' = '+str(c)+'\n'
             # print(writing,end='')
-            # f.write(writing)
+            f.write(writing)
             # c = sq(s,e,n)
             if c==p:
                 l.append(int(s)) 
@@ -75,13 +94,8 @@ def cyclic_attack(k,e,n):
             if q==10**9:
                 print('Infinite Loop')
                 return False
-            if q == 10**j:
-                print('Iteration Finished: ',10**j)
-                j = j + 1 
     
     print('CIPHER:',k)
-    print('Cipher in Text : ', con(k) )
-
     print('Plain:',l[0])
     print(enc(l[0],k,e,n))
     return l 
@@ -90,7 +104,8 @@ def enc(l,k,e,n):
     m = []
     for i in range(1):
         p = int(l)
-        c = p ** e % n 
+        # c = p ** e % n 
+        c = pow(p,e,n) % n 
         # c = sq(p,e,n)
         m.append(int(c)) 
     print('Checking::',(m[0]))
@@ -99,7 +114,7 @@ def enc(l,k,e,n):
     return False
 import json
 def import_jason():
-    with open('awesome.json', 'r') as f:
+    with open('oo.json', 'r') as f:
         distros_dict = json.load(f)
 
     for distro in distros_dict:
@@ -111,10 +126,25 @@ def import_jason():
     for i in range(len(k)):
         x = x + k[i]
     return int(x,16)
-
+from scapy.all import *
+def pkmkb():
+    packets = rdpcap('5.pcap')
+    sessions = packets.sessions()
+    text = ""
+    w = ""
+    for pkt in packets:
+        if Raw in pkt:
+            print(Raw)
+            w= pkt[Raw].load
+    # print(w)
+    c = w.decode("utf-8")
+    print(c)
+    return (c)
 def main():
     # k = (input('Cipher Text:').split(':'))
-    k = import_jason()
+    # k = import_jason()
+    k = int(pkmkb())
+    # print(k)
     print('Integer of Cipher : ', k)
     e = int(input('e: '))
     n = int(input('N: ')) 
@@ -129,7 +159,7 @@ def main():
     phi = int( (p-1) * (q-1) )
     if math.gcd(phi,e)!=1:
         print('E and Phi are not co-prime.')
-    cyclic_attack(k,e,n)
+    algo(k,e,n)
 
 
 if __name__ == '__main__':

@@ -19,10 +19,11 @@ def main():
 
 
                 # print('*')      #For Debugging
-            message = sys.stdin.readline()
+            message =input()
             if len(message)!=0 and message!="":
                 sock.send(message.encode('utf-8'))
                 sys.stdout.write("(You):" + message)
+                print()
                 sys.stdout.flush()
     sock.close()
 
