@@ -1,256 +1,122 @@
-import itertools
-
-
-class FPNode(object):
-
-    def __init__(self, value, count, parent):
-        self.value = value
-        self.count = count
-        self.parent = parent
-        self.link = None
-        self.children = []
-
-    def has_child(self, value):
-        for node in self.children:
-            if node.value == value:
-                return True
-
-        return False
-
-    def get_child(self, value):
-        for node in self.children:
-            if node.value == value:
-                return node
-
-        return None
-
-    def add_child(self, value):
-        child = FPNode(value, 1, self)
-        self.children.append(child)
-        return child
-
-
-class FPTree(object):
-
-    def __init__(self, transactions, threshold, root_value, root_count):
-        self.frequent = self.find_frequent_items(transactions, threshold)
-        self.headers = self.build_header_table(self.frequent)
-        self.root = self.build_fptree(
-            transactions, root_value,
-            root_count, self.frequent, self.headers)
-
-    @staticmethod
-    def find_frequent_items(transactions, threshold):
-        items = {}
-
-        for transaction in transactions:
-            for item in transaction:
-                if item in items:
-                    items[item] += 1
-                else:
-                    items[item] = 1
-
-        for key in list(items.keys()):
-            if items[key] < threshold:
-                del items[key]
-
-        return items
-
-    @staticmethod
-    def build_header_table(frequent):
-        headers = {}
-        for key in frequent.keys():
-            headers[key] = None
-
-        return headers
-
-    def build_fptree(self, transactions, root_value,
-                     root_count, frequent, headers):
-        root = FPNode(root_value, root_count, None)
-
-        for transaction in transactions:
-            sorted_items = [x for x in transaction if x in frequent]
-            sorted_items.sort(key=lambda x: frequent[x], reverse=True)
-            if len(sorted_items) > 0:
-                self.insert_tree(sorted_items, root, headers)
-
-        return root
-
-    def insert_tree(self, items, node, headers):
-        #Recusrion for tree grouth
-        first = items[0]
-        child = node.get_child(first)
-        if child is not None:
-            child.count += 1
+from itertools import chain, combinations
+class treeNode:
+    def __init__(self, nameValue, numOccur, parentNode):
+        self.name = nameValue
+        self.count = numOccur
+        self.nodeLink = None
+        self.parent = parentNode      
+        self.children = {}   
+    def inc(self, numOccur):
+        self.count += numOccur       
+    # def disp(self, ind=1):
+    #     print ('  '*ind, self.name, ' ', self.count)
+    #     for child in self.children.values():
+    #         child.disp(ind+1)
+def createTree(dataSet, minSup=1): 
+    # print(minSup)
+    headerTable = {}
+    for trans in dataSet:
+        for item in trans:
+            headerTable[item] = headerTable.get(item, 0) + dataSet[trans]
+    # print(headerTable)
+    for k in list(headerTable): 
+        if headerTable[k] < minSup: 
+            del(headerTable[k])
+    # print(headerTable)
+    freqItemSet = set(headerTable.keys())
+    # print(freqItemSet)
+    if len(freqItemSet) == 0: return None, None
+    for k in headerTable:
+        headerTable[k] = [headerTable[k], None] 
+    retTree = treeNode('Null Set', 1, None) 
+    for tranSet, count in dataSet.items(): 
+        localD = {}
+        for item in tranSet: 
+            if item in freqItemSet:
+                localD[item] = headerTable[item][0]
+        if len(localD) > 0:
+            orderedItems = [v[0] for v in sorted(localD.items(), key=lambda p: p[1], reverse=True)]
+            updateTree(orderedItems, retTree, headerTable, count)
+    return retTree, headerTable 
+def updateTree(items, inTree, headerTable, count):
+    if items[0] in inTree.children:
+        inTree.children[items[0]].inc(count)
+    else:  
+        inTree.children[items[0]] = treeNode(items[0], count, inTree)
+        if headerTable[items[0]][1] == None: 
+            headerTable[items[0]][1] = inTree.children[items[0]]
         else:
-            # Add new child.
-            child = node.add_child(first)
+            updateHeader(headerTable[items[0]][1], inTree.children[items[0]])
+    if len(items) > 1:
+        updateTree(items[1::], inTree.children[items[0]], headerTable, count)
+def updateHeader(nodeToTest, targetNode):   
+    while (nodeToTest.nodeLink != None):   
+        nodeToTest = nodeToTest.nodeLink
+    nodeToTest.nodeLink = targetNode
+def loadSimpDat(fname):
+    output=[]
+    file = open(fname, 'r')
+    for line in file:
+        line = line.strip().rstrip(',')                         
+        record = list(line.split(','))
+        output.append(record)
+    # print(output[:5])
+    return output
+def createInitSet(dataSet):
+    retDict = {}
+    for trans in dataSet:
+        retDict[frozenset(trans)] = 1
+    return retDict
+def ascendTree(leafNode, prefixPath): 
+    if leafNode.parent != None:
+        prefixPath.append(leafNode.name)
+        ascendTree(leafNode.parent, prefixPath)
+def findPrefixPath(basePat, treeNode): 
+    condPats = {}
+    while treeNode != None:
+        prefixPath = []
+        ascendTree(treeNode, prefixPath)
+        if len(prefixPath) > 1: 
+            condPats[frozenset(prefixPath[1:])] = treeNode.count
+        treeNode = treeNode.nodeLink
+    return condPats
 
-            # Link it to header structure.
-            if headers[first] is None:
-                headers[first] = child
-            else:
-                current = headers[first]
-                while current.link is not None:
-                    current = current.link
-                current.link = child
+def Mine_Tree(FPTree, HeaderTable, minSupport, prefix, frequent_itemset):
+    bigL = [v[0] for v in sorted(HeaderTable.items(),key=lambda p: p[1][0])]
+    for basePat in bigL:
+        new_frequentset = prefix.copy()
+        new_frequentset.add(basePat)
+        frequent_itemset.append(new_frequentset)
+        Conditional_pattern_bases = findPrefixPath(basePat, HeaderTable[basePat][1])
+        Conditional_FPTree, Conditional_header = createTree(Conditional_pattern_bases,minSupport)
 
-        # Call function recursively.
-        remaining_items = items[1:]
-        if len(remaining_items) > 0:
-            self.insert_tree(remaining_items, child, headers)
-
-    def tree_has_single_path(self, node):
-        #Find single Path. T/F
-        num_children = len(node.children)
-        if num_children > 1:
-            return False
-        elif num_children == 0:
-            return True
-        else:
-            return True and self.tree_has_single_path(node.children[0])
-
-    def mine_patterns(self, threshold):
-        if self.tree_has_single_path(self.root):
-            return self.generate_pattern_list()
-        else:
-            return self.zip_patterns(self.mine_sub_trees(threshold))
-
-    def zip_patterns(self, patterns):
-        # Append suffix to patterns in dictionary if we are in a conditional FP tree.
-        suffix = self.root.value
-
-        if suffix is not None:
-            # We are in a conditional tree.
-            new_patterns = {}
-            for key in patterns.keys():
-                new_patterns[tuple(sorted(list(key) + [suffix]))] = patterns[key]
-
-            return new_patterns
-
-        return patterns
-
-    def generate_pattern_list(self):
-        # Generate a list of patterns with support counts.
-        
-        patterns = {}
-        items = self.frequent.keys()
-
-        # If we are in a conditional tree,
-        # the suffix is a pattern on its own.
-        if self.root.value is None:
-            suffix_value = []
-        else:
-            suffix_value = [self.root.value]
-            patterns[tuple(suffix_value)] = self.root.count
-
-        for i in range(1, len(items) + 1):
-            for subset in itertools.combinations(items, i):
-                pattern = tuple(sorted(list(subset) + suffix_value))
-                patterns[pattern] = \
-                    min([self.frequent[x] for x in subset])
-
-        return patterns
-
-    def mine_sub_trees(self, threshold):
-        # Generate subtrees and mine them for patterns.
-        patterns = {}
-        mining_order = sorted(self.frequent.keys(),
-                              key=lambda x: self.frequent[x])
-
-        # Get items in tree in reverse order of occurrences.
-        for item in mining_order:
-            suffixes = []
-            conditional_tree_input = []
-            node = self.headers[item]
-
-            # Follow node links to get a list of
-            # all occurrences of a certain item.
-            while node is not None:
-                suffixes.append(node)
-                node = node.link
-
-            # For each occurrence of the item, 
-            # trace the path back to the root node.
-            for suffix in suffixes:
-                frequency = suffix.count
-                path = []
-                parent = suffix.parent
-
-                while parent.parent is not None:
-                    path.append(parent.value)
-                    parent = parent.parent
-
-                for i in range(frequency):
-                    conditional_tree_input.append(path)
-
-            # Now we have the input for a subtree,
-            # so construct it and grab the patterns.
-            subtree = FPTree(conditional_tree_input, threshold,
-                             item, self.frequent[item])
-            subtree_patterns = subtree.mine_patterns(threshold)
-
-            # Insert subtree patterns into main patterns dictionary.
-            for pattern in subtree_patterns.keys():
-                if pattern in patterns:
-                    patterns[pattern] += subtree_patterns[pattern]
-                else:
-                    patterns[pattern] = subtree_patterns[pattern]
-
-        return patterns
+        if Conditional_header != None:
+            Mine_Tree(Conditional_FPTree, Conditional_header, minSupport, new_frequentset, frequent_itemset)
 
 
-def find_frequent_patterns(transactions, support_threshold):
-    tree = FPTree(transactions, support_threshold, None, None)
-    return tree.mine_patterns(support_threshold)
 
-
-def generate_association_rules(patterns, confidence_threshold):
-    # Given a set of frequent itemsets, return a dict of association rules in the form
-    # {(left): ((right), confidence)}
-    rules = {}
-    for itemset in patterns.keys():
-        upper_support = patterns[itemset]
-
-        for i in range(1, len(itemset)):
-            for antecedent in itertools.combinations(itemset, i):
-                antecedent = tuple(sorted(antecedent))
-                consequent = tuple(sorted(set(itemset) - set(antecedent)))
-
-                if antecedent in patterns:
-                    lower_support = patterns[antecedent]
-                    confidence = float(upper_support) / lower_support
-
-                    if confidence >= confidence_threshold:
-                        rules[antecedent] = (consequent, confidence)
-
-    return rules
-import csv
-def read_file(file_number):
-
-	if file_number=='1':
-		f_name='test_dataset_1.csv'
-	else:
-		f_name='retail_dataset.csv'
-	
-	data=[]
-	with open(f_name, 'r') as f:
-		reader = csv.reader(f)
-		for row in reader:
-			if not row:
-				continue
-			data.append(row)
-
-	return data 
 def main():
-    file_number=input('\nChoose the data file\n1. test_dataset_1.csv \n2. retail_dataset.csv \n')
-    min_support=int(input('\nEnter minimum support:	'))
-    min_confidence=float(input('\nEnter minimum confidence:'))
-    data = read_file(file_number)
-    # print(data)
-    pattern = find_frequent_patterns(data,min_support)
-    rules = generate_association_rules(pattern,min_confidence)
-    print(rules) 
+    q = int(input("1.Test Data\t2. Retail Data\nChoice: "))
+    p = "test_dataset_1.csv"
+    if q==2:
+        p = "retail_dataset.csv"
+    # print(p)
+    simpDat = loadSimpDat(p)
+    initSet = createInitSet(simpDat)
+    minsup=int(input("Enter the minimum support:"))
+    minconf=float(input("Enter the minimum confidence:"))
+    myFPtree, myHeaderTab = createTree(initSet, minsup)
+    # frequent_itemset = None 
+    # myFPtree.disp()
+    frequent_itemset = []
+    Mine_Tree(myFPtree, myHeaderTab, minsup, set([]), frequent_itemset)
+    # print(findPrefixPath('I1', myHeaderTab['I1'][1]))
+    # print(findPrefixPath('I2', myHeaderTab['I2'][1]))
+    # print(findPrefixPath('I3', myHeaderTab['I3'][1]))
+    # print(findPrefixPath('I4', myHeaderTab['I4'][1]))
+    # print(findPrefixPath('I5', myHeaderTab['I5'][1]))
+    # print(assoc(frequent_itemset,minconf))
+    print("Frequent itemsets:",frequent_itemset)
 
 if __name__ == '__main__':
     main()

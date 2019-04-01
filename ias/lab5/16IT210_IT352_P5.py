@@ -42,7 +42,7 @@ def sq(x,c,n):
             z = (z*x) % n
     # print("z = ",int(z))
     return int(z)
-def algo(k,e,n):
+def cyclic_attack(k,e,n):
     l = list()
     # f = open("Program5-Output-CyclicProgram5.txt","w")
     f = open("q.txt","w")
@@ -52,6 +52,8 @@ def algo(k,e,n):
         s=int(p) 
         writing = 'C'+str(0)+'= '+str(k)+'\n'
         f.write(writing)
+        j=1
+
         while True:
             q=1+q
             c = s**e % n 
@@ -65,9 +67,12 @@ def algo(k,e,n):
             else:
                 s = c 
             # print(s,p)
-            if q==10**9:
+            if q==10**7:
                 print('Infinite Loop')
                 return False
+            if q == 10**j:
+                print('Iteration Finished: ',10**j)
+                j = j + 1 
     
     print('CIPHER:',k)
     print('Plain:',l[0])
@@ -102,7 +107,7 @@ def main():
     phi = int( (p-1) * (q-1) )
     if math.gcd(phi,e)!=1:
         print('E and Phi are not co-prime.')
-    algo(k,e,n)
+    cyclic_attack(k,e,n)
 
 
 if __name__ == '__main__':
