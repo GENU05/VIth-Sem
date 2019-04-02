@@ -93,6 +93,42 @@ def Mine_Tree(FPTree, HeaderTable, minSupport, prefix, frequent_itemset):
         if Conditional_header != None:
             Mine_Tree(Conditional_FPTree, Conditional_header, minSupport, new_frequentset, frequent_itemset)
 
+def asso(data,p,q,limit):
+    if len(p)==0 or len(q)==0:
+        return 
+    # print(p,':',q)
+    # n =two(data,p,q) 
+    n = one(data,p+q)
+    m =( one(data,p) )
+    # print(n , ':' , m) 
+    # n,m=m,n
+    # print(m,':',n)
+    if m!=0:
+        j=n /m
+    else:
+        j = 0
+    if (j) >= limit:
+        print(p,'==>',q,':',j) 
+def one(data,a):
+    d = 0
+    for i in range(len(data)):
+        p = data[i]
+        A = set(a)
+        B = set(p)
+        if A.issubset(B)==True:
+            d = d + 1 
+    return d 
+
+def two(data,a,b):
+    d = 0
+    for i in range(len(data)):
+        x = data[i] 
+        A = set(a+b)
+        B = set(x)
+        if A.issubset(B)==True:
+            d = d + 1
+    return d
+
 
 
 def main():
@@ -117,6 +153,27 @@ def main():
     # print(findPrefixPath('I5', myHeaderTab['I5'][1]))
     # print(assoc(frequent_itemset,minconf))
     print("Frequent itemsets:",frequent_itemset)
+    print(len(frequent_itemset))
+    # print(type(frequent_itemset))
+    x = input('Enter 1 to see associaltion rules: ') 
+    L = frequent_itemset
+    if int(x)==1:
+        limit = float(input('Enter confidence limit between 0-1: '))
+        print('Confidence which follows the limits is/are: ') 
+        for i in range(len(L)):
+            x = list(L[i])
+            # print(x,':::',i)
+            for j in range(len(x)):
+                sub = list(combinations(x,j)) 
+                # print(sub)
+                for k in range(len(sub)):
+                    a = list(sub[k]) 
+                    b = list( set(x) - set(a)) 
+                    asso(simpDat,a,b,limit)
+
+    print('Done!')
+    
+
 
 if __name__ == '__main__':
     main()
