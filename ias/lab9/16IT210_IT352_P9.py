@@ -95,20 +95,20 @@ def main():
         target = input('IP : ').strip()
     print(target,len(target))
     f.write('Target : '+ str(target)+'\n')
-    # min_port = int(input('Minimum port number: '))
-    # max_port = int(input('Maximum Port Numbrt: '))
-    # try:
-    #     if int(min_port) >= 0 and int(max_port)>=0 and int(max_port) >= int(min_port):
-    #         pass
-    #     else:
-    #         print('Invalid Port! Exiting...')
-    # except KeyboardInterrupt:
-    #     print('Bye!')
-    # # print()
+    min_port = int(input('Minimum port number: '))
+    max_port = int(input('Maximum Port Numbrt: '))
+    try:
+        if int(min_port) >= 0 and int(max_port)>=0 and int(max_port) >= int(min_port):
+            pass
+        else:
+            print('Invalid Port! Exiting...')
+    except KeyboardInterrupt:
+        print('Bye!')
+    # print()
     q = int(input('For TCP ACK SYNC Method press 1. Press 2 for TCP REQ Method: '))
     
-    # ports = range(min_port,max_port+1)
-    ports = [20,21,22,80,443]
+    ports = range(min_port,max_port+1)
+    # ports = [20,21,22,80,443]
     start_clock = datetime.now()
 
     if checkhost(target) == False:
