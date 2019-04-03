@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
@@ -15,17 +13,36 @@ RSTACK = 0x14
 def checkhost(ip):
     conf.verb = 0 
     try:
-        ping = srl(IP(dst=ip)/ICMP())
+        ping = sr1(IP(dst=ip)/ICMP())
         print('Target Is UP. Scanning Initiated. ')
     except Exception:
         print("Couldn't reolve Target!")
 
 def scanport(target,port):
+    print('Scanning Port Number: ',port)
     srcport = RandShort()
     conf.verb = 0 
-    SYNACKpkt = srl(IP(dst=target)/TCP(sport=srcport,dport=port,flag="S")) 
+    SYNACKpkt = sr1( IP( dst=target ) / TCP( sport=srcport,dport=port,flags="S" ) , timeout=2 ) 
     print(SYNACKpkt)
-    pktflags = SYNACKpkt.getlayer(TCP).flags
+    if(SYNACKpkt==None):
+        print('Port ', port,' Filtered!')
+        return False
+    # pktflags = SYNACKpkt.getlayer(TCP).flags
+    if(SYNACKpkt.getlayer(TCP)):
+        if(SYNACKpkt.getlayer(TCP).flags==SYNACK):
+            # Send RST.
+            i = send( IP(dst=target) / TCP(sport=srcport,dport=port,flags="RA") )
+            SYNACKpkt[0].show()
+            return True
+        elif(SYNACKpkt.getlayer(TCP).flags==RSTACK):
+            return False
+    # Control ICMP response.
+    elif(SYNACKpkt.haslayer(ICMP)):
+        if(int(SYNACKpkt.getlayer(ICMP).type)==3 and int(SYNACKpkt.getlayer(ICMP).code) in [1,2,3,9,10,13]):
+            print('Port ', port,' Filtered!')
+            return False
+    print('Port ', port,' Unknown!')
+    return False
     if pktflags == SYNACK:
         return True 
     return False         
@@ -55,11 +72,15 @@ def main():
     # print(checkhost)
     print('Scanning....')
     count = 0
+    total = 0
     for port in ports:
+        total = total + 1 
         status = scanport(target,port)
         if status == True:
             count = count + 1 
             print("Port: ",port," Open!")
+        if total % 500 == 0:
+            print('Scanned Ports: ',total)
     print("Total Open Ports: ",count)
     
     stop_clock = datetime.now()
