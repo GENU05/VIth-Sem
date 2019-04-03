@@ -19,13 +19,13 @@ def checkhost(ip):
         print("Couldn't reolve Target!")
 
 def scanport(target,port):
-    print('Scanning Port Number: ',port)
+    # print('Scanning Port Number: ',port)
     srcport = RandShort()
     conf.verb = 0 
     SYNACKpkt = sr1( IP( dst=target ) / TCP( sport=srcport,dport=port,flags="S" ) , timeout=2 ) 
     print(SYNACKpkt)
     if(SYNACKpkt==None):
-        print('Port ', port,' Filtered!')
+        # print('Port ', port,' Filtered!')
         return False
     # pktflags = SYNACKpkt.getlayer(TCP).flags
     if(SYNACKpkt.getlayer(TCP)):
@@ -41,11 +41,11 @@ def scanport(target,port):
         if(int(SYNACKpkt.getlayer(ICMP).type)==3 and int(SYNACKpkt.getlayer(ICMP).code) in [1,2,3,9,10,13]):
             print('Port ', port,' Filtered!')
             return False
-    print('Port ', port,' Unknown!')
+    # print('Port ', port,' Unknown!')
     return False
-    if pktflags == SYNACK:
-        return True 
-    return False         
+    # if pktflags == SYNACK:
+    #     return True 
+    # return False         
 
 def main():
     q = (input('Press 1 to enter Website Address. Any key for IP Address: '))
